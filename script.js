@@ -46,96 +46,20 @@ function animateBanner() {
 // Esperar un segundo antes de empezar la animación
 setTimeout(() => {
     animateBanner();
-}, 1000);
+}, 3000);
 
-const form = document.getElementById('registrationForm');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const nameError = document.getElementById('nameError');
-    const emailError = document.getElementById('emailError');
+document.getElementById('start-button').addEventListener('click', function() {
+    window.location.href = 'main.html'; // Redirigir al usuario a main.html
+});
 
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault();  // Prevenir el envío inmediato del formulario
+const logoImage = document.getElementById('logo-image');
 
-        let valid = true;
-        nameError.textContent = '';
-        emailError.textContent = '';
+// Cambiar a la nueva imagen cuando el cursor esté sobre el logo
+logoImage.addEventListener('mouseover', function() {
+    logoImage.src = 'logo-hover.svg'; // Cambia 'logo-hover.svg' por la imagen que tienes
+});
 
-        // Validación de nombre (que no esté vacío)
-        if (nameInput.value.trim() === '') {
-            nameError.textContent = 'El nombre es requerido.';
-            valid = false;
-        }
-
-        // Validación básica de email (formato)
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailInput.value)) {
-            emailError.textContent = 'Por favor, ingresa un email válido.';
-            alert('El correo electrónico ingresado no tiene un formato válido.');
-            valid = false;
-        }
-
-        // Verificación del checkbox
-        const emailConfirmation = document.getElementById('emailConfirmation');
-        if (!emailConfirmation.checked) {
-            alert('Por favor, confirma que tu correo electrónico es verdadero.');
-            valid = false;
-        }
-
-        if (valid) {
-            try {
-                // Enviar el email al backend para su validación
-                const response = await fetch('validate_email.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: emailInput.value })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    // Email válido, proceder con el envío del formulario
-                    alert(result.message);
-                    form.submit();  // Enviar el formulario
-                } else {
-                    // Email inválido
-                    alert(result.message);
-                }
-            } catch (error) {
-                console.error('Error al validar el email:', error);
-                alert('Ocurrió un error al validar el correo electrónico. Por favor, intenta nuevamente.');
-            }
-        }
-    });
-let menuIcon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
-let sections = document.querySelectorAll('section');
-let navLinks = document.querySelectorAll('header nav a');
-
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
-
-        if(top >= offset && top < offset + height){
-            navLinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('header nav a [href*='+ id + ' ]').classList.add('active')
-
-            })
-        }
-    })
-}
-
-menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-}
-
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    }, false);
+// Volver a la imagen original cuando el cursor salga del logo
+logoImage.addEventListener('mouseout', function() {
+    logoImage.src = 'logo.svg'; // Cambia a la imagen original
+});
